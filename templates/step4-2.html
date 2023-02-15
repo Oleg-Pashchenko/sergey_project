@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Шаг 4 - Чистка запросов с минус-фразами</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+<div class="container my-5">
+    <h1 class="mb-4 text-center">Чистка запросов с минус-фразами</h1>
+    <form method="POST" action="/step4-2">
+        <div class="d-flex justify-content-center">
+            <div class="container text-center justify-content-center">
+            <h6>Удалено ({{to_delete_count}}):</h6>
+            <table class="table">
+                {% for del in to_delete %}
+                <tr>
+                    <th>{{del}}</th>
+                </tr>
+                {% endfor %}
+            </table>
+                <div class="form-group">
+                <button type="submit" class="btn btn-primary" name="next-btn" id="next-btn">Далее</button>
+                <button type="submit" class="btn btn-secondary" name="reset-btn" id="reset-btn">Назад</button>
+            </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+<footer class="bg-l ight py-3">
+    <div class="container text-center">
+        <div class="container text-center justify-content-center">
+            <h6>Загруженные данные:</h6>
+            <p> Название маски: {{ mask_name }}</p>
+            <p>Оставшиеся фразы ({{after_delete_count}}):</p>
+            <table class="table">
+                {% for phrase in updated_phrases %}
+                <tr>
+                    <th>{{phrase}}</th>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

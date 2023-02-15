@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Шаг 2 - Ключевые фразы</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Подключение Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+<div class="container my-5">
+    <h1 class="mb-4">Ключевые фразы</h1>
+    <form method="POST" action="/step2-1">
+        <div class="form-group">
+            <label for="query-window">Запросы:</label>
+            <textarea class="form-control" id="query-window" rows="10" name="query" required></textarea>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary" name="action-btn" id="load-btn">Загрузить</button>
+            <button type="submit" class="btn btn-secondary" name="reset-btn" id="reset-btn">Назад</button>
+        </div>
+    </form>
+</div>
+<footer class="bg-l ight py-3">
+    <div class="container text-center">
+        <h6>Загруженные данные:</h6>
+        <p> Название маски: {{ mask_name }}</p>
+    </div>
+</footer>
+</body>
+</html>

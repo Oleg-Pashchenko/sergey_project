@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Шаг 3 - Минус фразы</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+<div class="container my-5">
+    <h1 class="mb-4 text-center">Минус фразы</h1>
+    <form method="POST" action="/step3-2">
+        <div class="container text-center justify-content-center">
+            <h6>Загруженные данные:</h6>
+            <p> Название маски: {{ mask_name }}</p>
+            <p>Фраз загружено: {{phrases_loaded }}</p>
+            <p>Минус фраз загружено: {{keywords_loaded }}</p>
+            <p>Фразы:</p>
+            <table class="table">
+                    {% for phrase in phrases %}
+                    <tr>
+                    <th>{{phrase}}</th>
+                    </tr>
+                {% endfor %}
+            </table>
+            <p>Минус фразы:</p>
+            <table class="table">
+                    {% for keyword in keywords %}
+                    <tr>
+                    <th>{{keyword}}</th>
+                    </tr>
+                {% endfor %}
+            </table>
+
+        </div>
+        <div class="d-flex justify-content-center">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" name="action-btn" id="load-btn">Далее</button>
+                <button type="submit" class="btn btn-secondary" name="reset-btn" id="reset-btn">Назад</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
