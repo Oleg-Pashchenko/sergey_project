@@ -1,3 +1,4 @@
+import pymorphy2
 from flask import Flask, render_template, request, redirect, session, send_file
 
 from logic import clear_requests, prepare_excel
@@ -77,6 +78,11 @@ def step3_1_post():
         return redirect('/step2-2')
     else:
         query = request.form['query'].replace('\r', '').strip().split('\n')
+
+        morph = pymorphy2.MorphAnalyzer()
+
+        for q in range(len(query)):
+            query[q] = morph.parse(query[q])[0].normal_form
         session['keywords_loaded'] = len(query)
         session['keywords'] = query
         return redirect('/step3-2')
@@ -144,7 +150,7 @@ def step4_2_post():
 def step5_1_get():
     phrases = session.get('after_delete', [])
     mask_name = session.get('mask_name', '')
-    categories = get_repeated_words(phrases)
+    categories = get_repeated_words(phrases, mask_name)
     return render_template('step5-1.html', categories=categories, phrases=phrases, after_delete=len(phrases))
 
 
