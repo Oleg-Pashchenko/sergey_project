@@ -163,7 +163,7 @@ def step5_1_post():
     phrases = session.get('after_delete', [])
     clustered_words = cluster_words(phrases, categories)
     session['clustered_words'] = clustered_words
-    return redirect('/step5-2')
+    return redirect('/step6')
 
 
 @app.route('/step5-2', methods=['GET'])
@@ -188,9 +188,10 @@ def step6_get():
 @app.route('/step6', methods=['POST'])
 def step6_post():
     if 'reset-btn' in request.form:
-        return redirect('/step5-2')
+        return redirect('/step5-1')
     clustered_words = session.get('clustered_words', {})
-    prepare_excel.start(clustered_words)
+    mask = session.get('mask', '')
+    prepare_excel.start(clustered_words, mask)
     return send_file('result.xlsx', as_attachment=True)
 
 

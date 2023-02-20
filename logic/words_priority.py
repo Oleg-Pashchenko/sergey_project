@@ -20,6 +20,18 @@ def delete_mask_words(arr, mask):
             arr.remove(p)
     return arr
 
+
+def delete_prepositions(arr):
+    res = []
+    for word in arr:
+        p = morph.parse(word)[0]
+        if 'PREP' in p.tag:
+            pass
+        else:
+            res.append(word)
+    return res
+
+
 def get_repeated_words(phrases, mask):
     words = {}
     for phrase in phrases:
@@ -38,6 +50,7 @@ def get_repeated_words(phrases, mask):
         if words[key] > 1:
             to_view.append(key)
     to_view = delete_mask_words(to_view, mask)
+    to_view = delete_prepositions(to_view)
     return to_view
 
 
@@ -48,19 +61,26 @@ def clusterize(phrase, order):
             if p in o:
                 return o
 
-    return "Underfined"
+    return "Остальное"
 
 
 def cluster_words(phrases, order):
-    res = {"Underfined": []}
+    res = {"Остальное": []}
     for phrase in phrases:
         o = clusterize(phrase, order)
         if o in res.keys():
             res[o].append(phrase)
         else:
             res[o] = [phrase]
-    if len(res['Underfined']) == 0:
-        del res['Underfined']
+    for key in res.keys():
+        if key == 'Остальное':
+            continue
+        if len(res[key]) == 1:
+            res['Остальное'] = res[key][0]
+            del res[key]
+
+    if len(res['Остальное']) == 0:
+        del res['Остальное']
     return res
 
 # ph = ['потолочная люстра металлическая', 'купить потолочную люстру металлическую', 'потолочная люстра недорого',
