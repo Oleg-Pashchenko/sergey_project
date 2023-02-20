@@ -27,22 +27,23 @@ def start(clustered_words, mask):
     index = 0
     anothers = clustered_words['Остальное']
     for key in clustered_words.keys():
-        index += 1
-        if key != 'Остальное' and len(clustered_words[key]) == 1:
+        if key == 'Остальное':
+            pass
+        elif key != 'Остальное' and len(clustered_words[key]) == 1:
             anothers.append(clustered_words[key][0])
-        elif key != 'Остальное':
+        else:
+            index += 1
             for phrase in clustered_words[key]:
                 res.append([index, f"{get_repeated_words(clustered_words[key], phrase, key, mask)}", phrase, key])
     for phrase in anothers:
-        res.append([index, f"{get_repeated_words(clustered_words['Остальное'], phrase, 'Остальное', mask)}", phrase,
+        res.append([index + 1, f"{get_repeated_words(clustered_words['Остальное'], phrase, 'Остальное', mask)}", phrase,
                     'Остальное'])
-
+    print(res)
     write_file(res)
 
 
 def write_file(data):
     a = {}
-
     for i in data[0]:
         a[i] = []
 
