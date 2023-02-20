@@ -5,6 +5,8 @@ morph = pymorphy2.MorphAnalyzer()
 
 def start(minus_phrases, phrases):
     to_delete = set()
+    if minus_phrases[0] == '':
+        return []
     for phrase in phrases:
         for word_index, word in enumerate(phrase.split()):
             for minus_phrase in minus_phrases:
