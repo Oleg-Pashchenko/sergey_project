@@ -24,7 +24,7 @@ def delete_mask_words(arr, mask):
 def delete_prepositions(arr):
     res = []
     for word in arr:
-        p = morph.parse(word)[0]
+        p = morph.parse(word.replace('+', ''))[0]
         if 'PREP' in p.tag:
             pass
         else:
