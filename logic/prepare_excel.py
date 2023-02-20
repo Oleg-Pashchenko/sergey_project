@@ -14,6 +14,7 @@ def get_repeated_words(arr, phrase, key, mask):
     a = ' + '.join(mask.split()) + ' + ' + key
     return a.title()
 
+
 def start(clustered_words, mask):
     print(mask)
     res = [['Номер группы', 'Название группы', 'Фраза', "Соответствие"]]
@@ -34,8 +35,8 @@ def start(clustered_words, mask):
                     phrases.append(phrase)
                     res.append([index, f"{get_repeated_words(clustered_words[key], phrase, key, mask)}", phrase, key])
     for phrase in anothers:
-        if phrase not in phrases:
-            res.append([index + 1, f"{get_repeated_words(clustered_words['Остальное'], phrase, 'Остальное', mask)}", phrase,
+        # if phrase not in phrases:
+        res.append([index + 1, f"{get_repeated_words(clustered_words['Остальное'], phrase, 'Остальное', mask)}", phrase,
                     'Остальное'])
     print(res)
     write_file(res)
