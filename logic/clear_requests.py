@@ -34,8 +34,9 @@ def start(minus_phrases, phrases):
                         to_delete.add(phrase)
 
                 for minus_word_index, minus_word in enumerate(minus_phrase.split()):
-                    if '!' == minus_word[0] and minus_word[1::] not in phrase:
+                    if '!' == minus_word[0] and minus_word[1::] in phrase:
                         print('!', phrase)
+
                         to_delete.add(phrase)
                     try:
                         if '+' == minus_word[0] and phrase.split().index(minus_word[1::]) != minus_word_index:
