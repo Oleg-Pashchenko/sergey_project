@@ -5,13 +5,13 @@ morph = pymorphy2.MorphAnalyzer()
 
 
 def get_repeated_words(arr, phrase, key, mask):
-    print(arr, phrase, key, mask)
     words_arr = set()
     for i in arr:
         for j in i.split():
             if j != phrase:
                 p = morph.parse(j)[0].normal_form
                 words_arr.add(p)
+    return mask.split()[0] + ' + ' + key
     res = []
     for i in phrase.split():
         if i in words_arr:
@@ -33,9 +33,18 @@ def start(clustered_words, mask):
 
 
 def write_file(data):
-    data = pd.DataFrame(data)
-    print(data)
+    a = {}
+    for i in data[0]:
+        a[i] = []
+
+    for i in data[1::]:
+        index = -1
+        for j in a.keys():
+            index += 1
+            a[j].append(i[index])
+
+    data = pd.DataFrame(a)
     writer = pd.ExcelWriter('result.xlsx', engine='xlsxwriter')
-    data.to_excel(writer, sheet_name='Sheet1')
+    data.to_excel(writer, sheet_name='Sheet1', index=False)
     writer.save()
 

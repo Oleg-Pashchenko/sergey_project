@@ -190,7 +190,8 @@ def step6_post():
     if 'reset-btn' in request.form:
         return redirect('/step5-1')
     clustered_words = session.get('clustered_words', {})
-    mask = session.get('mask', '')
+    mask = session.get('mask_name', '')
+
     prepare_excel.start(clustered_words, mask)
     return send_file('result.xlsx', as_attachment=True)
 

@@ -72,15 +72,16 @@ def cluster_words(phrases, order):
             res[o].append(phrase)
         else:
             res[o] = [phrase]
-    for key in res.keys():
-        if key == 'Остальное':
-            continue
-        if len(res[key]) == 1:
-            res['Остальное'] = res[key][0]
-            del res[key]
 
-    if len(res['Остальное']) == 0:
-        del res['Остальное']
+    result = {'Остальное': []}
+    for key in res.keys():
+        if len(res[key]) == 1:
+            result['Остальное'].append(res[key][0])
+        else:
+            result[key] = res[key]
+
+    if len(result['Остальное']) == 0:
+        del result['Остальное']
     return res
 
 # ph = ['потолочная люстра металлическая', 'купить потолочную люстру металлическую', 'потолочная люстра недорого',
