@@ -8,7 +8,7 @@ def start(minus_phrases, phrases):
     for phrase in phrases:
         for word_index, word in enumerate(phrase.split()):
             for minus_phrase in minus_phrases:
-                if '"' == minus_phrase[0] and '"' == minus_phrase[-1] and len(minus_phrase.split()) != len(
+                if '"' == minus_phrase[0] and '"' == minus_phrase[-1] and len(minus_phrase.split()) == len(
                         phrase.split()):
                     to_delete.add(phrase)
 
@@ -20,7 +20,7 @@ def start(minus_phrases, phrases):
                     for seq_word in seq_phrase:
                         if seq_word in phrase:
                             fl = True
-                    if not fl:
+                    if fl:
                         to_delete.add(phrase)
 
                 if '[' in minus_phrase:
@@ -28,7 +28,7 @@ def start(minus_phrases, phrases):
                         start_index = minus_phrase.index('[')
                         end_index = minus_phrase.index(']')
                         seq_phrase = minus_phrase[start_index + 1:end_index]
-                        if seq_phrase not in phrase:
+                        if seq_phrase in phrase:
                             to_delete.add(phrase)
                     except:
                         to_delete.add(phrase)
@@ -37,7 +37,7 @@ def start(minus_phrases, phrases):
                     if '!' == minus_word[0] and minus_word[1::] in phrase.split():
                         to_delete.add(phrase)
                     try:
-                        if '+' == minus_word[0] and phrase.split().index(minus_word[1::]) != minus_word_index:
+                        if '+' == minus_word[0] and phrase.split().index(minus_word[1::]) == minus_word_index:
                             print(word_index, minus_word_index)
                             print('+', phrase)
                             to_delete.add(phrase)
