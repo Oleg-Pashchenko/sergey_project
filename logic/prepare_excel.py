@@ -19,17 +19,23 @@ def start(clustered_words, mask):
     res = [['Номер группы', 'Название группы', 'Фраза', "Соответствие"]]
     index = 0
     anothers = clustered_words['Остальное']
+    phrases = []
     for key in clustered_words.keys():
         if key == 'Остальное':
             pass
         elif key != 'Остальное' and len(clustered_words[key]) == 1:
-            anothers.append(clustered_words[key][0])
+            if clustered_words[key][0] not in phrases:
+                anothers.append(clustered_words[key][0])
+                phrases.append(clustered_words[key][0])
         else:
             index += 1
             for phrase in clustered_words[key]:
-                res.append([index, f"{get_repeated_words(clustered_words[key], phrase, key, mask)}", phrase, key])
+                if phrase not in phrases:
+                    phrases.append(phrase)
+                    res.append([index, f"{get_repeated_words(clustered_words[key], phrase, key, mask)}", phrase, key])
     for phrase in anothers:
-        res.append([index + 1, f"{get_repeated_words(clustered_words['Остальное'], phrase, 'Остальное', mask)}", phrase,
+        if phrase not in phrases:
+            res.append([index + 1, f"{get_repeated_words(clustered_words['Остальное'], phrase, 'Остальное', mask)}", phrase,
                     'Остальное'])
     print(res)
     write_file(res)
