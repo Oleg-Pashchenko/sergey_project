@@ -25,15 +25,24 @@ def get_repeated_words(arr, phrase, key, mask):
 def start(clustered_words, mask):
     res = [['Номер группы', 'Название группы', 'Фраза', "Соответствие"]]
     index = 0
+    anothers = clustered_words['Остальное']
     for key in clustered_words.keys():
         index += 1
-        for phrase in clustered_words[key]:
-            res.append([index, f"{get_repeated_words(clustered_words[key], phrase, key, mask)}", phrase, key])
+        if key != 'Остальное' and len(clustered_words[key]) == 1:
+            anothers.append(clustered_words[key][0])
+        elif key != 'Остальное':
+            for phrase in clustered_words[key]:
+                res.append([index, f"{get_repeated_words(clustered_words[key], phrase, key, mask)}", phrase, key])
+    for phrase in anothers:
+        res.append([index, f"{get_repeated_words(clustered_words['Остальное'], phrase, 'Остальное', mask)}", phrase,
+                    'Остальное'])
+
     write_file(res)
 
 
 def write_file(data):
     a = {}
+
     for i in data[0]:
         a[i] = []
 
@@ -42,9 +51,7 @@ def write_file(data):
         for j in a.keys():
             index += 1
             a[j].append(i[index])
-
     data = pd.DataFrame(a)
     writer = pd.ExcelWriter('result.xlsx', engine='xlsxwriter')
     data.to_excel(writer, sheet_name='Sheet1', index=False)
     writer.save()
-

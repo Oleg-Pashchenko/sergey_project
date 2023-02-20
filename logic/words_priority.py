@@ -5,10 +5,13 @@ morph = pymorphy2.MorphAnalyzer()
 
 def remove_prepositions(text):
     words = text.split()
+    to_delete = 'в, без, до, из, к, на, по, о, от, перед, при, через, для, с, у, за, над, об, под, про, '
+    to_delete += 'и, а, но, как, чем, или'
+    to_delete = to_delete.split(', ')
     result = []
     for word in words:
-        parsed_word = morph.parse(word)[0]
-        if 'PREP' not in parsed_word.tag:
+        parsed_word = morph.parse(word.replace('+', ''))[0]
+        if 'PREP' not in parsed_word.tag and word.replace('+', '').lower() not in to_delete:
             result.append(parsed_word.normal_form)
     return ' '.join(result)
 
