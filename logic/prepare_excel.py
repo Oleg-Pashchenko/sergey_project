@@ -11,18 +11,11 @@ def get_repeated_words(arr, phrase, key, mask):
             if j != phrase:
                 p = morph.parse(j)[0].normal_form
                 words_arr.add(p)
-    return mask.split()[0] + ' + ' + key
-    res = []
-    for i in phrase.split():
-        if i in words_arr:
-            res.append(i)
-    if key in res:
-        res.remove(key)
-    res.append(key)
-    return ' + '.join(res)
-
+    a = ' + '.join(mask.split()) + ' + ' + key
+    return a.title()
 
 def start(clustered_words, mask):
+    print(mask)
     res = [['Номер группы', 'Название группы', 'Фраза', "Соответствие"]]
     index = 0
     anothers = clustered_words['Остальное']
