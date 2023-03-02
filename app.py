@@ -43,7 +43,7 @@ def step2_1_post():
         query = request.form['query'].replace('\r', '').strip().split('\n')
         session['phrases_loaded'] = len(query)
         session['phrases'] = query
-        return redirect('/step2-2')
+        return redirect('/step3-1')
 
 
 @app.route('/step2-2', methods=['POST'])
@@ -75,7 +75,7 @@ def step3_2_get():
 @app.route('/step3-1', methods=['POST'])
 def step3_1_post():
     if 'reset-btn' in request.form.keys():
-        return redirect('/step2-2')
+        return redirect('/step2-1')
     else:
         query = request.form['query'].replace('\r', '').strip().split('\n')
 
