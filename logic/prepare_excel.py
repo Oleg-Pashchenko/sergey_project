@@ -1,6 +1,8 @@
 import pandas as pd
 import pymorphy2
 
+import file_path
+
 morph = pymorphy2.MorphAnalyzer()
 
 
@@ -14,7 +16,7 @@ def get_repeated_words(arr, phrase, key, mask):
     a = ' + '.join(mask.split()) + ' + ' + key
     return a.title()
 
-def start(clustered_words, mask):
+def start(clustered_words, mask, priority):
     print(mask)
     res = [['Номер группы', 'Название группы', 'Фраза', "Соответствие"]]
     index = 0
@@ -34,6 +36,14 @@ def start(clustered_words, mask):
                     phrases.append(phrase)
                     res.append([index, f"{get_repeated_words(clustered_words[key], phrase, key, mask)}", phrase, key])
     anothers = set(anothers)
+    """
+    response = []
+    for p in priority:
+        index += 1
+        for r in res:
+            if r[2] == p:
+                response.append([index, r[0], r[1], r[2]])
+                """
     for phrase in anothers:
         #if phrase not in phrases:
         res.append([index + 1, f"{get_repeated_words(clustered_words['Остальное'], phrase, 'Остальное', mask)}", phrase,
@@ -52,7 +62,15 @@ def write_file(data):
         for j in a.keys():
             index += 1
             a[j].append(i[index])
+
+    import openpyxl
+    from openpyxl.utils.dataframe import dataframe_to_rows
+    print('yes1')
     data = pd.DataFrame(a)
-    writer = pd.ExcelWriter('result.xlsx', engine='xlsxwriter')
-    data.to_excel(writer, sheet_name='Sheet1', index=False)
-    writer.save()
+    book = openpyxl.Workbook()
+    writer = book.active
+    print('yes2')
+    for row in dataframe_to_rows(data, index=False, header=True):
+        writer.append(row)
+    print('yes3')
+    book.save(file_path.get())

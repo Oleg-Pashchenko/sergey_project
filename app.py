@@ -1,13 +1,15 @@
 import pymorphy2
 from flask import Flask, render_template, request, redirect, session, send_file
-
+from flask_session import Session
+import file_path
 from logic import clear_requests, prepare_excel
 from logic.words_priority import get_repeated_words, cluster_words
 
 app = Flask(__name__)
 app.secret_key = 'mysecretkey'
-
-
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SESSION_COOKIE_MAX_SIZE'] = 999999999999
+Session(app)
 @app.route('/', methods=['GET'])
 def step1():
     session.clear()
@@ -63,6 +65,7 @@ def step3_1_get():
 
 @app.route('/step3-2', methods=['GET'])
 def step3_2_get():
+    return redirect('/step4-1')
     mask_name = session.get('mask_name', '')
     phrases_loaded = session.get('phrases_loaded', 0)
     phrases = session.get('phrases', '')
@@ -112,7 +115,7 @@ def step4_1_post():
     phrases = session.get('phrases', '')
     keywords = session.get('keywords', '')
     if 'reset-btn' in request.form:
-        return redirect('/step3-2')
+        return redirect('/step3-1')
     elif 'action-btn' in request.form:
         to_delete = clear_requests.start(keywords, phrases)
         updated_phrases = clear_requests.get_updated_list(phrases, to_delete)
@@ -130,6 +133,7 @@ def step4_1_post():
 
 @app.route('/step4-2', methods=['GET'])
 def step4_2_get():
+    return redirect('/step5-1')
     mask_name = session.get('mask_name', '')
     to_delete = session.get('to_delete', [])
     updated_phrases = session.get('after_delete')
@@ -158,8 +162,9 @@ def step5_1_get():
 def step5_1_post():
     categories = list(request.form.keys())
     if 'reset-btn' in request.form:
-        return redirect('/step4-2')
+        return redirect('/step4-1')
     categories.remove('next-btn')
+    session['categories'] = categories
     phrases = session.get('after_delete', [])
     clustered_words = cluster_words(phrases, categories)
     session['clustered_words'] = clustered_words
@@ -192,9 +197,9 @@ def step6_post():
     clustered_words = session.get('clustered_words', {})
     mask = session.get('mask_name', '')
 
-    prepare_excel.start(clustered_words, mask)
-    return send_file('result.xlsx', as_attachment=True)
+    prepare_excel.start(clustered_words, mask, session.get('categories', []))
+    return send_file(file_path.get(), as_attachment=True)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
